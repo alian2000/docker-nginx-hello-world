@@ -9,3 +9,5 @@ ADD index.html /usr/share/nginx/html/
 
 # Keep Nginx running
 CMD ["nginx", "-g", "daemon off;"]
+# Expose port 80
+EXPOSE 80
