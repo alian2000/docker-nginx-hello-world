@@ -12,11 +12,11 @@
 # Expose port 80
 #EXPOSE 80
 
-FROM nginx:alpine
+FROM nginx
 
 #RUN rm /usr/share/nginx/html/*
 
-COPY index.html /usr/share/nginx/html/index.html
+COPY index.html /usr/share/nginx/html/
 
 EXPOSE 80
 
