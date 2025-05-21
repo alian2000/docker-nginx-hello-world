@@ -12,7 +12,7 @@
 # Expose port 80
 #EXPOSE 80
 
-FROM nginx
+FROM nginx:latest
 
 #RUN rm /usr/share/nginx/html/*
 
