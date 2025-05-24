@@ -1,26 +1,22 @@
-# Use an official Ubuntu base image
-FROM ubuntu:latest
+# Use the official Nginx base image
+FROM nginx:latest
 
-# Set environment variables (optional but good practice)
-ENV NGINX_VERSION 1.25.1
+# Install bash
+# We use 'apt-get update' to refresh the package list
+# and 'apt-get install -y bash' to install bash without prompting
+RUN apt-get update && apt-get install -y bash
 
-# Install necessary packages:
-#   - apt-get update: Updates the package list
-#   - apt-get install -y: Installs packages without prompting for confirmation
-#     - nginx: The Nginx web server
-#     - bash: Explicitly ensure bash is installed (though it's usually there on Ubuntu)
-#     - procps: Provides 'ps' command, which is often useful for process monitoring
-RUN apt-get update && \
-    apt-get install -y \
-    nginx \
-    bash \
-    procps && \
-    rm -rf /var/lib/apt/lists/*
-
-# Expose port 80 (default HTTP port for Nginx)
+# Expose port 80 (default Nginx HTTP port)
 EXPOSE 80
 
-# Command to run when the container starts
-# This uses bash to execute the Nginx command.
-# -g "daemon off;" keeps Nginx in the foreground, essential for Docker containers.
-CMD ["/bin/bash", "-c", "nginx -g 'daemon off;'"]
+# The default Nginx configuration already points to /usr/share/nginx/html
+# for serving static files. You can place your HTML/CSS/JS files there
+# when you build your image or mount a volume at runtime.
+
+# If you want to put default content directly into the image:
+# COPY ./html_content/ /usr/share/nginx/html/
+# (Assuming you have a folder named 'html_content' in the same directory as your Dockerfile)
+
+# Command to run Nginx in the foreground
+# This is typically the default command for the nginx image, but it's good to be explicit
+CMD ["nginx", "-g", "daemon off;"]
