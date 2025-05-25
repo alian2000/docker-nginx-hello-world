@@ -1,10 +1,22 @@
-FROM busybox:latest
+# Use the official Nginx base image
+FROM nginx:latest
 
-# Expose port 80 for the web server
+# Install bash
+# We use 'apt-get update' to refresh the package list
+# and 'apt-get install -y bash' to install bash without prompting
+RUN apt-get update && apt-get install -y bash
+
+# Expose port 80 (default Nginx HTTP port)
 EXPOSE 80
 
-# Create a simple index.html
-RUN echo "<h1>Hello from BusyBox!</h1>" > /var/www/index.html
+# The default Nginx configuration already points to /usr/share/nginx/html
+# for serving static files. You can place your HTML/CSS/JS files there
+# when you build your image or mount a volume at runtime.
 
-# Set the command to run the httpd server
-CMD ["httpd", "-f", "-p", "80", "-h", "/var/www"]
+# If you want to put default content directly into the image:
+# COPY ./html_content/ /usr/share/nginx/html/
+# (Assuming you have a folder named 'html_content' in the same directory as your Dockerfile)
+
+# Command to run Nginx in the foreground
+# This is typically the default command for the nginx image, but it's good to be explicit
+CMD ["nginx", "-g", "daemon off;"]
